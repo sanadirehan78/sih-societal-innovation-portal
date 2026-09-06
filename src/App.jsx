@@ -1,3 +1,4 @@
+import React from "react";
 import ChallengeForm from "./components/ChallengeForm";
 import "./App.css";
 
@@ -6,8 +7,10 @@ function App() {
     <div className="app">
       <header className="header">
         <div className="container">
-          <h1>Societal Innovation Collaboration Portal</h1>
-          <p>Citizen Challenge Submission</p>
+          <h1>Societal Innovation Portal</h1>
+          <p>
+            Report problems and collaborate to build better communities.
+          </p>
         </div>
       </header>
 
