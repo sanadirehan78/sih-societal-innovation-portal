@@ -1,95 +1,100 @@
 import React, { useState } from "react";
 
 function ChallengeForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    district: "",
+    location: "",
+    evidence: null,
+  });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setSubmitted(true);
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    alert("Challenge submitted successfully!");
+
+    console.log(formData);
   };
 
   return (
-    <section className="form-card">
-      <div className="form-heading">
-        <h2>Submit a Citizen Challenge</h2>
-        <p>
-          Help identify a local problem that can be solved through innovation
-          and collaboration.
+    <div className="challenge-container">
+      <div className="challenge-card">
+        <h2>Citizen Challenge Submission</h2>
+        <p className="subtitle">
+          Report a societal problem and help create a better community.
         </p>
-      </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="title">Problem Title</label>
+        <form onSubmit={handleSubmit}>
+          <label>Problem Title</label>
           <input
-            id="title"
             type="text"
-            placeholder="Enter the problem title"
+            name="title"
+            placeholder="Enter problem title"
+            value={formData.title}
+            onChange={handleChange}
             required
           />
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="description">Problem Description</label>
+          <label>Problem Description</label>
           <textarea
-            id="description"
-            rows="6"
-            placeholder="Describe the problem in detail..."
+            name="description"
+            placeholder="Describe the problem in detail"
+            value={formData.description}
+            onChange={handleChange}
+            rows="5"
             required
-          ></textarea>
-        </div>
+          />
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="district">District</label>
-            <select id="district" required>
-              <option value="">Select District</option>
-              <option value="Pune">Pune</option>
-              <option value="Mumbai">Mumbai</option>
-              <option value="Nashik">Nashik</option>
-              <option value="Nagpur">Nagpur</option>
-              <option value="Kolhapur">Kolhapur</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
+          <label>District</label>
+          <select
+            name="district"
+            value={formData.district}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select District</option>
+            <option value="Pune">Pune</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Nashik">Nashik</option>
+            <option value="Nagpur">Nagpur</option>
+            <option value="Kolhapur">Kolhapur</option>
+            <option value="Satara">Satara</option>
+          </select>
 
-          <div className="form-group">
-            <label htmlFor="location">Location</label>
-            <input
-              id="location"
-              type="text"
-              placeholder="Enter location"
-              required
-            />
-          </div>
-        </div>
+          <label>Location</label>
+          <input
+            type="text"
+            name="location"
+            placeholder="Enter location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+          />
 
-        <div className="form-group">
-          <label htmlFor="evidence">Evidence / Photo</label>
+          <label>Evidence / Photo</label>
+          <input
+            type="file"
+            name="evidence"
+            accept="image/*"
+            onChange={handleChange}
+          />
 
-          <div className="upload-box">
-            <input
-              id="evidence"
-              type="file"
-              accept="image/*"
-            />
-
-            <span>Upload a photo showing the problem</span>
-            <small>Supported format: JPG, PNG</small>
-          </div>
-        </div>
-
-        <button type="submit" className="submit-button">
-          Submit Challenge
-        </button>
-
-        {submitted && (
-          <p style={{ marginTop: "15px", color: "green" }}>
-            Challenge submitted successfully!
-          </p>
-        )}
-      </form>
-    </section>
+          <button type="submit">
+            Submit Challenge
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 
