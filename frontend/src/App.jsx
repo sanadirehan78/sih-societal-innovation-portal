@@ -3,6 +3,8 @@ import "./App.css";
 
 function App() {
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -65,20 +67,21 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
+    setSuccessMessage("");
+    setErrorMessage("");
+
     const challenge = {
       title: formData.title,
       description: formData.description,
-      category: formData.category,
       district: formData.district,
       location: formData.location,
-      citizen_name: formData.citizenName,
-      citizen_contact: formData.citizenContact,
+      submitted_by: `${formData.citizenName} - ${formData.citizenContact}`,
     };
-  
+
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/challenges",
+        "http://127.0.0.1:8000/challenges",
         {
           method: "POST",
           headers: {
@@ -87,17 +90,21 @@ function App() {
           body: JSON.stringify(challenge),
         }
       );
-  
+
       if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+
+        console.error("Backend error:", errorData);
+
         throw new Error("Failed to submit challenge");
       }
-  
+
       const result = await response.json();
-  
+
       setSuccessMessage(
         `Challenge submitted successfully! Your Challenge ID is #${result.id}.`
       );
-  
+
       setFormData({
         title: "",
         description: "",
@@ -109,16 +116,17 @@ function App() {
         evidence: null,
       });
     } catch (error) {
-      console.error(error);
-  
-      setSuccessMessage(
-        `Challenge submitted successfully! Your Challenge ID is #${result.id}.`
+      console.error("Submission error:", error);
+
+      setErrorMessage(
+        "Failed to submit challenge. Please make sure the backend is running."
       );
     }
   };
 
   return (
     <div className="app">
+      {/* Header */}
       <header className="header">
         <div className="header-content">
           <div className="logo">SI</div>
@@ -131,6 +139,7 @@ function App() {
       </header>
 
       <main className="main-container">
+        {/* Hero */}
         <section className="hero">
           <span className="badge">CITIZEN ENGAGEMENT</span>
 
@@ -142,16 +151,26 @@ function App() {
           </p>
         </section>
 
+        {/* Form */}
         <section className="form-card">
-            {successMessage && (
-              <div className="success-message">
-                <strong>✓ Challenge Submitted Successfully!</strong>
-                  <p>{successMessage}</p>
-          </div>
-  )}
+          {/* Success Message */}
+          {successMessage && (
+            <div className="success-message">
+              <strong>✓ Challenge Submitted Successfully!</strong>
+              <p>{successMessage}</p>
+            </div>
+          )}
 
-  <form onSubmit={handleSubmit}>
+          {/* Error Message */}
+          {errorMessage && (
+            <div className="error-message">
+              <strong>✕ Submission Failed</strong>
+              <p>{errorMessage}</p>
+            </div>
+          )}
 
+          <form onSubmit={handleSubmit}>
+            {/* Problem Title */}
             <div className="form-group">
               <label htmlFor="title">
                 Problem Title <span>*</span>
@@ -168,6 +187,7 @@ function App() {
               />
             </div>
 
+            {/* Problem Description */}
             <div className="form-group">
               <label htmlFor="description">
                 Problem Description <span>*</span>
@@ -184,6 +204,7 @@ function App() {
               />
             </div>
 
+            {/* Category and District */}
             <div className="two-column">
               <div className="form-group">
                 <label htmlFor="category">
@@ -230,10 +251,9 @@ function App() {
               </div>
             </div>
 
+            {/* Location */}
             <div className="form-group">
-              <label htmlFor="location">
-                Location
-              </label>
+              <label htmlFor="location">Location</label>
 
               <input
                 id="location"
@@ -245,6 +265,7 @@ function App() {
               />
             </div>
 
+            {/* Citizen Information */}
             <div className="section-title personal-info">
               <h3>Citizen Information</h3>
               <p>Provide your contact information for follow-up.</p>
@@ -284,10 +305,9 @@ function App() {
               </div>
             </div>
 
+            {/* Evidence */}
             <div className="form-group">
-              <label htmlFor="evidence">
-                Evidence / Photo
-              </label>
+              <label htmlFor="evidence">Evidence / Photo</label>
 
               <div className="upload-box">
                 <input
@@ -302,6 +322,7 @@ function App() {
               </div>
             </div>
 
+            {/* Information Box */}
             <div className="info-box">
               <div className="info-icon">AI</div>
 
@@ -316,6 +337,7 @@ function App() {
               </div>
             </div>
 
+            {/* Submit */}
             <button type="submit" className="submit-button">
               Submit Challenge
               <span>→</span>
@@ -324,10 +346,10 @@ function App() {
         </section>
       </main>
 
+      {/* Footer */}
       <footer>
         <p>
-          Societal Innovation Collaboration Portal • Smart India Hackathon
-          MVP
+          Societal Innovation Collaboration Portal • Smart India Hackathon MVP
         </p>
       </footer>
     </div>
