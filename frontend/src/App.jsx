@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
+
+  const [challenges, setChallenges] = useState([]);
+  const [showChallenges, setShowChallenges] = useState(false);
+  const [loadingChallenges, setLoadingChallenges] = useState(false);
+  const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [loadingDetails, setLoadingDetails] = useState(false);
+
+
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -63,6 +71,55 @@ function App() {
       ...formData,
       [name]: files ? files[0] : value,
     });
+  };
+  const fetchChallenges = async () => {
+    setLoadingChallenges(true);
+  
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8000/challenges"
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch challenges");
+      }
+  
+      const data = await response.json();
+  
+      setChallenges(data);
+      setShowChallenges(true);
+    } catch (error) {
+      console.error("Error fetching challenges:", error);
+      setErrorMessage(
+        "Failed to load challenges. Please make sure the backend is running."
+      );
+    } finally {
+      setLoadingChallenges(false);
+    }
+  };
+  const fetchChallengeDetails = async (challengeId) => {
+    setLoadingDetails(true);
+  
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/challenges/${challengeId}`
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch challenge details");
+      }
+  
+      const data = await response.json();
+  
+      setSelectedChallenge(data);
+    } catch (error) {
+      console.error("Error fetching challenge details:", error);
+      setErrorMessage(
+        "Failed to load challenge details. Please make sure the backend is running."
+      );
+    } finally {
+      setLoadingDetails(false);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -342,9 +399,105 @@ function App() {
               Submit Challenge
               <span>→</span>
             </button>
+            <button 
+              type="button"
+              className="view-challenges-button"
+              onClick={fetchChallenges}
+          >
+            View Submitted Challenges
+        </button>
           </form>
-        </section>
-      </main>
+          </section>
+
+{/* Challenge List */}
+{showChallenges && (
+  <section className="form-card challenge-list">
+    <h2>Submitted Challenges</h2>
+
+    {loadingChallenges ? (
+      <p>Loading challenges...</p>
+    ) : challenges.length === 0 ? (
+      <p>No challenges submitted yet.</p>
+    ) : (
+      challenges.map((challenge) => (
+        <div className="challenge-item" key={challenge.id}>
+          <h3
+             className="challenge-title"
+             onClick={() => fetchChallengeDetails(challenge.id)}
+           >
+             #{challenge.id} - {challenge.title}
+           </h3>
+
+          <p>{challenge.description}</p>
+
+          <p>
+            <strong>District:</strong> {challenge.district}
+          </p>
+
+          <p>
+            <strong>Priority:</strong> {challenge.priority}
+          </p>
+
+          <p>
+            <strong>Status:</strong> {challenge.status}
+          </p>
+        </div>
+      ))
+    )}
+  </section>
+)}
+{/* Challenge Details */}
+{selectedChallenge && (
+  <section className="form-card challenge-details">
+    <h2>Challenge Details</h2>
+
+    {loadingDetails ? (
+      <p>Loading details...</p>
+    ) : (
+      <>
+        <h3>
+          #{selectedChallenge.id} - {selectedChallenge.title}
+        </h3>
+
+        <p>
+          <strong>Description:</strong>
+        </p>
+        <p>{selectedChallenge.description}</p>
+
+        <p>
+          <strong>District:</strong> {selectedChallenge.district}
+        </p>
+
+        <p>
+          <strong>Location:</strong> {selectedChallenge.location}
+        </p>
+
+        <p>
+          <strong>Category:</strong> {selectedChallenge.category}
+        </p>
+
+        <p>
+          <strong>Priority:</strong> {selectedChallenge.priority}
+        </p>
+
+        <p>
+          <strong>Status:</strong> {selectedChallenge.status}
+        </p>
+
+        <p>
+          <strong>Submitted By:</strong> {selectedChallenge.submitted_by}
+        </p>
+
+        <p>
+          <strong>Created At:</strong>{" "}
+          {new Date(selectedChallenge.created_at).toLocaleString()}
+        </p>
+      </>
+    )}
+  </section>
+)}
+
+</main>
 
       {/* Footer */}
       <footer>

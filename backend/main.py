@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
@@ -61,3 +61,23 @@ def list_challenges(db: Session = Depends(get_db)):
         .order_by(Challenge.created_at.desc())
         .all()
     )
+@app.get("/challenges/{challenge_id}", response_model=ChallengeRead)
+def get_challenge(
+    challenge_id: int,
+    db: Session = Depends(get_db)
+):
+    challenge = (
+        db.query(Challenge)
+        .filter(Challenge.id == challenge_id)
+        .first()
+    )
+
+    if challenge is None:
+        from fastapi import HTTPException
+
+        raise HTTPException(
+            status_code=404,
+            detail="Challenge not found"
+        )
+
+    return challenge

@@ -300,4 +300,38 @@ footer {
     margin: 0;
     font-size: 14px;
   }
+  /* Challenge List */
+.challenge-list {
+  margin-top: 30px;
+}
+
+.challenge-list h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.challenge-item {
+  border: 1px solid #dce3ec;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  background: #f9fbfe;
+}
+
+.challenge-item h3 {
+  margin: 0 0 12px;
+  color: #173b6c;
+  font-size: 18px;
+}
+
+.challenge-item p {
+  margin: 8px 0;
+  color: #5e6878;
+  line-height: 1.5;
+}
+
+.challenge-item strong {
+  color: #172033;
+}
 }
