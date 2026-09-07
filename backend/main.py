@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
 from database import Base, engine, get_db
@@ -38,4 +38,19 @@ def create_challenge(payload: ChallengeCreate, db: Session = Depends(get_db)):
 
 @app.get("/challenges", response_model=list[ChallengeRead])
 def list_challenges(db: Session = Depends(get_db)):
-    return db.query(Challenge).order_by(Challenge.created_at.desc()).all()
+    return db.query(Challenge).order_by(Challenge.created_at.desc()).all() 
+    @app.get("/challenges/{challenge_id}", response_model=ChallengeRead)
+def get_challenge(challenge_id: int, db: Session = Depends(get_db)):
+    challenge = (
+        db.query(Challenge)
+        .filter(Challenge.id == challenge_id)
+        .first()
+    )
+
+    if not challenge:
+        raise HTTPException(
+            status_code=404,
+            detail="Challenge not found"
+        )
+
+    return challenge
