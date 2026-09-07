@@ -449,6 +449,14 @@ function App() {
 {/* Challenge Details */}
 {selectedChallenge && (
   <section className="form-card challenge-details">
+    <button
+      type="button"
+      className="back-button"
+      disabled={loadingDetails}
+      onClick={() => setSelectedChallenge(null)}
+     >
+      ← Back to Challenges
+    </button>
     <h2>Challenge Details</h2>
 
     {loadingDetails ? (

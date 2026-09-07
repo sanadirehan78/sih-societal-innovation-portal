@@ -283,6 +283,7 @@ footer {
     grid-template-columns: 1fr;
     gap: 0;
   }
+
   .success-message {
     background: #e8f7ee;
     border: 1px solid #a9dfbd;
@@ -290,17 +291,21 @@ footer {
     padding: 16px;
     margin-bottom: 25px;
   }
-  
+
   .success-message strong {
     display: block;
     margin-bottom: 5px;
   }
-  
+
   .success-message p {
     margin: 0;
     font-size: 14px;
   }
-  /* Challenge List */
+}
+
+
+/* Challenge List */
+
 .challenge-list {
   margin-top: 30px;
 }
@@ -334,4 +339,73 @@ footer {
 .challenge-item strong {
   color: #172033;
 }
+
+
+/* Challenge Details */
+
+.challenge-details {
+  margin-top: 30px;
+}
+
+.challenge-details h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.challenge-details h3 {
+  color: #173b6c;
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+
+/* Back Button */
+
+.back-button {
+  border: none;
+  background: #eef5ff;
+  color: #173b6c;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.back-button:hover {
+  background: #dceaff;
+}
+
+
+/* Clickable Challenge Title */
+
+.challenge-title {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.challenge-title:hover {
+  color: #3275c7;
+  text-decoration: underline;
+}
+/* View Challenges Button */
+.view-challenges-button {
+  width: 100%;
+  border: 1px solid #173b6c;
+  border-radius: 9px;
+  padding: 12px 20px;
+  margin-top: 12px;
+  background: white;
+  color: #173b6c;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.view-challenges-button:hover {
+  background: #eef5ff;
 }
