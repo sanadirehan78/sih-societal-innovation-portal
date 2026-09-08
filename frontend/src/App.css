@@ -409,3 +409,166 @@ footer {
 .view-challenges-button:hover {
   background: #eef5ff;
 }
+
+/* AI Analysis Section in Challenge Details */
+
+.ai-analysis-section {
+  margin-top: 25px;
+  background: #f8fbff;
+  border: 1px solid #cde0f7;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 4px 14px rgba(23, 59, 108, 0.05);
+}
+
+.ai-analysis-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.ai-badge {
+  background: #173b6c;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.ai-analysis-header h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #173b6c;
+}
+
+.ai-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ai-field {
+  background: white;
+  border: 1px solid #e1e8f2;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ai-field-full {
+  grid-column: 1 / -1;
+}
+
+.ai-field-label {
+  font-size: 12px;
+  color: #687386;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.ai-field-value {
+  font-size: 15px;
+  color: #172033;
+  font-weight: 500;
+}
+
+.ai-priority-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.ai-priority-badge.priority-high {
+  background: #fde8e8;
+  color: #c81e1e;
+}
+
+.ai-priority-badge.priority-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.ai-priority-badge.priority-low {
+  background: #def7ec;
+  color: #03543f;
+}
+
+.duplicate-warning {
+  color: #b45309;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.duplicate-safe {
+  color: #047857;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.hei-card {
+  background: #ffffff;
+  border: 1.5px solid #bdd7f5;
+}
+
+.hei-details {
+  margin-top: 4px;
+}
+
+.hei-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hei-name {
+  font-size: 17px;
+  color: #173b6c;
+  font-weight: bold;
+}
+
+.hei-score-badge {
+  background: #e1effe;
+  color: #1a56db;
+  border: 1px solid #b4c6fc;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.hei-reason {
+  margin: 10px 0 0;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.5;
+  background: #f9fbfe;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border-left: 3px solid #3275c7;
+}
+
+.hei-empty {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  font-style: italic;
+}
+
+@media (max-width: 700px) {
+  .ai-grid {
+    grid-template-columns: 1fr;
+  }
+}

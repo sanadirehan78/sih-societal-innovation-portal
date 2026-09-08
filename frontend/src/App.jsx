@@ -481,14 +481,6 @@ function App() {
         </p>
 
         <p>
-          <strong>Category:</strong> {selectedChallenge.category}
-        </p>
-
-        <p>
-          <strong>Priority:</strong> {selectedChallenge.priority}
-        </p>
-
-        <p>
           <strong>Status:</strong> {selectedChallenge.status}
         </p>
 
@@ -500,6 +492,66 @@ function App() {
           <strong>Created At:</strong>{" "}
           {new Date(selectedChallenge.created_at).toLocaleString()}
         </p>
+
+        {/* AI Analysis Section */}
+        <div className="ai-analysis-section">
+          <div className="ai-analysis-header">
+            <span className="ai-badge">AI Analysis</span>
+            <h4>Intelligent Classification & HEI Recommendation</h4>
+          </div>
+
+          <div className="ai-grid">
+            <div className="ai-field">
+              <span className="ai-field-label">Category</span>
+              <span className="ai-field-value">{selectedChallenge.category || "Not available"}</span>
+            </div>
+
+            <div className="ai-field">
+              <span className="ai-field-label">Priority</span>
+              <span className={`ai-priority-badge priority-${(selectedChallenge.priority || "low").toLowerCase()}`}>
+                {selectedChallenge.priority || "Low"}
+              </span>
+            </div>
+
+            <div className="ai-field ai-field-full">
+              <span className="ai-field-label">Duplicate Status</span>
+              <span className="ai-field-value">
+                {selectedChallenge.is_duplicate ? (
+                  <span className="duplicate-warning">
+                    ⚠️ Potential Duplicate ({Math.round((selectedChallenge.similarity_score || 0) * 100)}% match with #{selectedChallenge.similar_problem_id} - "{selectedChallenge.similar_problem_title}")
+                  </span>
+                ) : (
+                  <span className="duplicate-safe">
+                    ✅ Unique Challenge (No duplicate detected)
+                  </span>
+                )}
+              </span>
+            </div>
+
+            <div className="ai-field ai-field-full hei-card">
+              <span className="ai-field-label">Recommended HEI / University</span>
+              {selectedChallenge.recommended_hei ? (
+                <div className="hei-details">
+                  <div className="hei-header">
+                    <strong className="hei-name">{selectedChallenge.recommended_hei}</strong>
+                    {selectedChallenge.hei_match_score != null && (
+                      <span className="hei-score-badge">
+                        {Math.round(selectedChallenge.hei_match_score * 100)}% Match
+                      </span>
+                    )}
+                  </div>
+                  {selectedChallenge.hei_recommendation_reason && (
+                    <p className="hei-reason">
+                      <strong>Recommendation Reason:</strong> {selectedChallenge.hei_recommendation_reason}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <p className="hei-empty">No HEI recommendation available for this challenge.</p>
+              )}
+            </div>
+          </div>
+        </div>
       </>
     )}
   </section>
