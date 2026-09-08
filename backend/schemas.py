@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -26,5 +27,9 @@ class ChallengeRead(BaseModel):
     status: str
     submitted_by: str
     created_at: datetime
+    is_duplicate: Optional[bool] = False
+    similarity_score: Optional[float] = 0.0
+    similar_problem_id: Optional[str] = None
+    similar_problem_title: Optional[str] = None
 
     model_config = {"from_attributes": True}

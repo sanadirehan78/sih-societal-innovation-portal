@@ -1,0 +1,11 @@
+problem_id,description,category
+TEST-001,Patients in our village cannot get essential medicines from the local health centre,Healthcare
+TEST-002,Children in the village have no proper school building or classroom facilities,Education
+TEST-003,Farmers are losing crops because irrigation facilities are not available,Agriculture
+TEST-004,Residents have to walk several kilometres to get safe drinking water,Water
+TEST-005,Garbage is being dumped openly near houses and is not collected regularly,Waste Management
+TEST-006,The village road becomes badly damaged and difficult to use during the rainy season,Rural Infrastructure
+TEST-007,There are frequent power cuts and unreliable electricity supply in the village,Energy
+TEST-008,Women and children in the village cannot get proper medical care from the local health centre,Healthcare
+TEST-009,Young people cannot find local employment opportunities after completing their education,Livelihood
+TEST-010,The village lacks proper internet connectivity and residents cannot access online government services,Digital Infrastructure
