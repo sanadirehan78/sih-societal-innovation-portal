@@ -1,3 +1,16 @@
+import sys
+from pathlib import Path
+
+# Ensure backend directory has precedence for database/models/schemas,
+# and project root is available for ai imports without shadowing backend modules
+BACKEND_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BACKEND_DIR.parent
+
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+
 # pyrefly: ignore [missing-import]
 from fastapi import Depends, FastAPI, HTTPException
 # pyrefly: ignore [missing-import]
@@ -13,6 +26,7 @@ from schemas import ChallengeCreate, ChallengeRead
 from ai.ml_categorizer import predict_category
 from ai.priority import detect_priority
 from ai.duplicate_detector import find_similar_problem
+from ai.hei_recommender import recommend_heis
 
 app = FastAPI()
 
@@ -51,6 +65,9 @@ def create_challenge(
         payload.description
     )
 
+    hei_recommendations = recommend_heis(payload.description, predicted_category)
+    top_hei = hei_recommendations[0] if hei_recommendations else None
+
     challenge = Challenge(
         title=payload.title,
         description=payload.description,
@@ -64,6 +81,9 @@ def create_challenge(
         similarity_score=float(similarity_score),
         similar_problem_id=similar_problem["problem_id"],
         similar_problem_title=similar_problem["title"],
+        recommended_hei=top_hei["institution"] if top_hei else None,
+        hei_match_score=float(top_hei["score"]) if top_hei else 0.0,
+        hei_recommendation_reason=top_hei["reason"] if top_hei else None,
     )
 
     db.add(challenge)

@@ -24,3 +24,6 @@ class Challenge(Base):
     similarity_score = Column(Float, nullable=True, default=0.0)
     similar_problem_id = Column(String(100), nullable=True)
     similar_problem_title = Column(String(200), nullable=True)
+    recommended_hei = Column(String(200), nullable=True)
+    hei_match_score = Column(Float, nullable=True, default=0.0)
+    hei_recommendation_reason = Column(Text, nullable=True)

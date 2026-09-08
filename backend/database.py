@@ -50,3 +50,9 @@ def init_db():
                 conn.execute(text("ALTER TABLE challenges ADD COLUMN similar_problem_id VARCHAR(100)"))
             if "similar_problem_title" not in columns:
                 conn.execute(text("ALTER TABLE challenges ADD COLUMN similar_problem_title VARCHAR(200)"))
+            if "recommended_hei" not in columns:
+                conn.execute(text("ALTER TABLE challenges ADD COLUMN recommended_hei VARCHAR(200)"))
+            if "hei_match_score" not in columns:
+                conn.execute(text("ALTER TABLE challenges ADD COLUMN hei_match_score FLOAT DEFAULT 0.0"))
+            if "hei_recommendation_reason" not in columns:
+                conn.execute(text("ALTER TABLE challenges ADD COLUMN hei_recommendation_reason TEXT"))

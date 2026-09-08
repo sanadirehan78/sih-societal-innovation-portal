@@ -31,5 +31,8 @@ class ChallengeRead(BaseModel):
     similarity_score: Optional[float] = 0.0
     similar_problem_id: Optional[str] = None
     similar_problem_title: Optional[str] = None
+    recommended_hei: Optional[str] = None
+    hei_match_score: Optional[float] = 0.0
+    hei_recommendation_reason: Optional[str] = None
 
     model_config = {"from_attributes": True}
