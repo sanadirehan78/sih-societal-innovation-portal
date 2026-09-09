@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Dict, Optional
 
 from pydantic import BaseModel, Field
 
@@ -36,3 +36,14 @@ class ChallengeRead(BaseModel):
     hei_recommendation_reason: Optional[str] = None
 
     model_config = {"from_attributes": True}
+
+
+class DashboardStats(BaseModel):
+    """Aggregated statistics for government dashboard."""
+
+    total_challenges: int
+    high_priority_challenges: int
+    duplicate_challenges: int
+    categories: Dict[str, int]
+    districts: Dict[str, int]
+    statuses: Dict[str, int]

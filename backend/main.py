@@ -15,13 +15,13 @@ if str(PROJECT_ROOT) not in sys.path:
 from fastapi import Depends, FastAPI, HTTPException
 # pyrefly: ignore [missing-import]
 from fastapi.middleware.cors import CORSMiddleware
-# pyrefly: ignore [missing-import]
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 
 from database import Base, engine, get_db, init_db
 from models import Challenge
-from schemas import ChallengeCreate, ChallengeRead
+from schemas import ChallengeCreate, ChallengeRead, DashboardStats
 
 from ai.ml_categorizer import predict_category
 from ai.priority import detect_priority
@@ -100,6 +100,61 @@ def list_challenges(db: Session = Depends(get_db)):
         .order_by(Challenge.created_at.desc())
         .all()
     )
+
+
+@app.get("/dashboard/stats", response_model=DashboardStats)
+def get_dashboard_stats(db: Session = Depends(get_db)):
+    """Calculate and return real-time societal challenge statistics for the government dashboard."""
+    total_challenges = db.query(func.count(Challenge.id)).scalar() or 0
+
+    high_priority_challenges = (
+        db.query(func.count(Challenge.id))
+        .filter(Challenge.priority == "High")
+        .scalar()
+        or 0
+    )
+
+    duplicate_challenges = (
+        db.query(func.count(Challenge.id))
+        .filter(Challenge.is_duplicate.is_(True))
+        .scalar()
+        or 0
+    )
+
+    category_counts = (
+        db.query(Challenge.category, func.count(Challenge.id))
+        .group_by(Challenge.category)
+        .order_by(Challenge.category)
+        .all()
+    )
+    categories = {cat: count for cat, count in category_counts}
+
+    district_counts = (
+        db.query(Challenge.district, func.count(Challenge.id))
+        .group_by(Challenge.district)
+        .order_by(Challenge.district)
+        .all()
+    )
+    districts = {dist: count for dist, count in district_counts}
+
+    status_counts = (
+        db.query(Challenge.status, func.count(Challenge.id))
+        .group_by(Challenge.status)
+        .order_by(Challenge.status)
+        .all()
+    )
+    statuses = {st: count for st, count in status_counts}
+
+    return {
+        "total_challenges": total_challenges,
+        "high_priority_challenges": high_priority_challenges,
+        "duplicate_challenges": duplicate_challenges,
+        "categories": categories,
+        "districts": districts,
+        "statuses": statuses,
+    }
+
+
 @app.get("/challenges/{challenge_id}", response_model=ChallengeRead)
 def get_challenge(
     challenge_id: int,
